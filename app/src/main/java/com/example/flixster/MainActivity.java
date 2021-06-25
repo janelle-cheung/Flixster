@@ -1,15 +1,14 @@
 package com.example.flixster;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
@@ -36,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String KEY_RATING = "rating";
     public static final String KEY_OVERVIEW = "overview";
     public static final String KEY_BACKDROP_PATH = "backdrop_path";
+    public static final String KEY_ID = "id";
 
     List<Movie> movies;
 
@@ -48,21 +48,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(view);
         RecyclerView rvMovies = binding.rvMovies;
 
-        /*setContentView(R.layout.activity_main);
-        RecyclerView rvMovies = findViewById(R.id.rvMovies);*/
-
         movies = new ArrayList<>();
 
         MovieAdapter.OnClickListener onClickListener = new MovieAdapter.OnClickListener() {
             @Override
             public void onItemClicked(int position) {
-                Intent i = new Intent(MainActivity.this, DetailsActivity.class);
+                Intent i = new Intent(MainActivity.this, MovieDetailsActivity.class);
                 i.putExtra(KEY_POSTER_PATH, movies.get(position).getPosterPath());
                 i.putExtra(KEY_BACKDROP_PATH, movies.get(position).getBackdropPath());
                 i.putExtra(KEY_TITLE, movies.get(position).getTitle());
                 i.putExtra(KEY_YEAR, movies.get(position).getYear());
                 i.putExtra(KEY_RATING, movies.get(position).getRating());
                 i.putExtra(KEY_OVERVIEW, movies.get(position).getOverview());
+                i.putExtra(KEY_ID, movies.get(position).getId());
                 startActivity(i);
             }
         };
@@ -76,22 +74,25 @@ public class MainActivity extends AppCompatActivity {
         // Set a Layout Manager on the recycler view
         rvMovies.setLayoutManager(new LinearLayoutManager(this));
 
+        rvMovies.addItemDecoration(new DividerItemDecoration(rvMovies.getContext(), DividerItemDecoration.VERTICAL));
+
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(NOW_PLAYING_URL, new JsonHttpResponseHandler() {
             @Override
-            public void onSuccess(int i, Headers headers, JSON json) {
+            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                Log.d(TAG, "onSuccess");
                 JSONObject jsonObject = json.jsonObject;
                 try {
                     JSONArray results = jsonObject.getJSONArray("results");
                     movies.addAll(Movie.fromJsonArray(results));
                     movieAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
-                    Log.d(TAG, "Hit json exception", e);
+                    Log.d(TAG, "Hit JSON exception", e);
                 }
             }
 
             @Override
-            public void onFailure(int i, Headers headers, String s, Throwable throwable) {
+            public void onFailure(int statusCode, Headers headers, String s, Throwable throwable) {
                 Log.d(TAG, "onFailure");
             }
         });

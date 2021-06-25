@@ -14,8 +14,8 @@ public class Movie {
     String title;
     String overview;
     double rating;
-    int year;
-    String videoKey;
+    Integer year;
+    Integer id;
 
     public Movie(JSONObject jsonObject) throws JSONException {
         backdropPath = jsonObject.getString("backdrop_path");
@@ -24,6 +24,7 @@ public class Movie {
         overview = jsonObject.getString("overview");
         rating = jsonObject.getDouble("vote_average");
         year = Integer.parseInt(jsonObject.getString("release_date").substring(0, 4));
+        id = jsonObject.getInt("id");
     }
 
     public static List<Movie> fromJsonArray(JSONArray movieJsonArray) throws JSONException {
@@ -51,4 +52,6 @@ public class Movie {
     public String getOverview() { return overview; }
 
     public double getRating() { return rating; }
+
+    public Integer getId() { return id; }
 }

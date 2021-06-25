@@ -88,20 +88,20 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             tvOverview.setText(movie.getOverview());
 
             String imageUrl;
-            int placeholderOrientation;
+            int placeholder;
             if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 imageUrl = movie.getBackdropPath();
-                placeholderOrientation = R.mipmap.backdrop_placeholder_foreground;
+                placeholder = R.mipmap.backdrop_placeholder_foreground;
             } else {
                 imageUrl = movie.getPosterPath();
-                placeholderOrientation = R.mipmap.placeholder_foreground;
+                placeholder = R.mipmap.placeholder_foreground;
             }
 
             int radius = 30;
             int margin = 10;
             Glide.with(context)
                     .load(imageUrl)
-                    .placeholder(placeholderOrientation)
+                    .placeholder(placeholder)
                     .centerCrop() // scale image to fill the entire ImageView
                     .transform(new RoundedCornersTransformation(radius, margin))
                     .into(ivPoster);

@@ -5,16 +5,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DetailsActivity">
+    tools:context=".MovieDetailsActivity" >
 
     <ImageView
         android:id="@+id/ivPoster"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
+        android:layout_marginEnd="20dp"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
         tools:srcCompat="@tools:sample/avatars" />
@@ -29,9 +31,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="0dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="230dp"
         style="?android:attr/ratingBarStyleIndicator" />
 
     <TextView
@@ -42,6 +42,8 @@
         android:textAlignment="center"
         android:textSize="25sp"
         android:textStyle="bold"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivPoster"
@@ -52,11 +54,33 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rbRating"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         android:layout_alignParentStart="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:textSize="17sp"
+        android:layout_marginTop="10dp"
+        android:textSize="16sp"
         tools:text="Movie overview" />
+
+    <ImageButton
+        android:id="@+id/btnYouTube"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@mipmap/youtube_logo_foreground" />
+
+    <TextView
+        android:id="@+id/tvWatchTrailer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="3dp"
+        android:layout_marginBottom="34dp"
+        android:layout_toStartOf="@+id/btnYouTube"
+        android:text="Watch Trailer here"
+        android:textSize="17sp" />
+
 </RelativeLayout>

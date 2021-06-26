@@ -22,12 +22,12 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.Headers;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String NOW_PLAYING_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=d54409dd2729bc6f105a0c0e4b7c2ebc";
     public static final String TAG = "MainActivity";
     public static final String KEY_POSTER_PATH = "poster_path";
     public static final String KEY_TITLE = "title";
@@ -37,11 +37,17 @@ public class MainActivity extends AppCompatActivity {
     public static final String KEY_BACKDROP_PATH = "backdrop_path";
     public static final String KEY_ID = "id";
 
+    String categoryTitle;
+    String categoryPath;
     List<Movie> movies;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "created main activity");
         super.onCreate(savedInstanceState);
+        categoryTitle = getIntent().getStringExtra(CategoryActivity.KEY_CATEGORY_TITLE);
+        categoryPath = getIntent().getStringExtra(CategoryActivity.KEY_CATEGORY_PATH);
+        getSupportActionBar().setTitle(categoryTitle);
 
         ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
@@ -77,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
         rvMovies.addItemDecoration(new DividerItemDecoration(rvMovies.getContext(), DividerItemDecoration.VERTICAL));
 
         AsyncHttpClient client = new AsyncHttpClient();
+
+        String NOW_PLAYING_URL = "https://api.themoviedb.org/3/movie/" + categoryPath + "?api_key=d54409dd2729bc6f105a0c0e4b7c2ebc";
         client.get(NOW_PLAYING_URL, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {
@@ -86,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
                     JSONArray results = jsonObject.getJSONArray("results");
                     movies.addAll(Movie.fromJsonArray(results));
                     movieAdapter.notifyDataSetChanged();
+                    Log.d(TAG, String.valueOf(movies.size()));
                 } catch (JSONException e) {
                     Log.d(TAG, "Hit JSON exception", e);
                 }
